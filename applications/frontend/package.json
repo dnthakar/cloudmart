@@ -1,0 +1,7 @@
+{
+  "name": "cloudmart-frontend",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "echo 'Frontend running in Docker via Nginx'"
+  }
+}
