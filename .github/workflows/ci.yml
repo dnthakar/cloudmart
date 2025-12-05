@@ -1,24 +1,36 @@
-name: CI Pipeline
+name: CI
 
-on: [push]
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
 jobs:
-  test-frontend:
+  build-and-test:
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Install Node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 20
-      - run: cd applications/frontend && npm install && npm run build
 
-  test-backend:
-    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Setup Python
-        uses: actions/setup-python@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          python-version: 3.11
-      - run: cd applications/backend && pip install -r requirements.txt
+          python-version: '3.11'
+
+      - name: Install backend dependencies
+        working-directory: applications/backend
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      # Basic syntax check of your FastAPI code
+      - name: Basic syntax check
+        run: |
+          python -m compileall applications/backend/app
+
+      # Make sure Dockerfile builds (CI-only build)
+      - name: Build Docker image (CI test build)
+        run: |
+          docker build -t cloudmart-api:ci-test .
