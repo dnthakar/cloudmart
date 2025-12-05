@@ -11,7 +11,7 @@ env:
   AZURE_CONTAINER_GROUP: cloudmart-app
   AZURE_LOCATION: canadacentral
   AZURE_VNET: Student-1893556-vnet
-  AZURE_SUBNET: app-subnet
+  AZURE_SUBNET: Virtual-Desktop-Client
 
 jobs:
   build-push-deploy:
