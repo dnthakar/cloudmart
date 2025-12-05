@@ -47,21 +47,20 @@ jobs:
             --name ${{ env.AZURE_CONTAINER_GROUP }} \
             --yes
 
-      - name: Deploy to Azure Container Instances
-        run: |
-          az container create \
-            --resource-group ${{ env.AZURE_RESOURCE_GROUP }} \
-            --name ${{ env.AZURE_CONTAINER_GROUP }} \
-            --image ${{ env.DOCKER_IMAGE }} \
-            --location ${{ env.AZURE_LOCATION }} \
-            --os-type Linux \
-            --cpu 1 \
-            --memory 1.5 \
-            --restart-policy Always \
-            --ports 80 \
-            --vnet ${{ env.AZURE_VNET }} \
-            --subnet ${{ env.AZURE_SUBNET }} \
-            --environment-variables \
-              COSMOS_ENDPOINT=${{ secrets.COSMOS_ENDPOINT }} \
-              COSMOS_KEY=${{ secrets.COSMOS_KEY }}
+- name: Deploy to Azure Container Instances
+  run: |
+    az container create \
+      --resource-group ${{ env.AZURE_RESOURCE_GROUP }} \
+      --name ${{ env.AZURE_CONTAINER_GROUP }} \
+      --image ${{ env.DOCKER_IMAGE }} \
+      --location ${{ env.AZURE_LOCATION }} \
+      --os-type Linux \
+      --cpu 1 \
+      --memory 1.5 \
+      --restart-policy Always \
+      --ports 80 \
+      --environment-variables \
+        COSMOS_ENDPOINT=${{ secrets.COSMOS_ENDPOINT }} \
+        COSMOS_KEY=${{ secrets.COSMOS_KEY }}
+
 
