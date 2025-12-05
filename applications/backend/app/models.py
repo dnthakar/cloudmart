@@ -1,20 +1,17 @@
-from pydantic import BaseModel
-from typing import List
+from app.database import products_container, cart_container, orders_container
 
-class Product(BaseModel):
-    id: str
-    name: str
-    category: str
-    price: float
+def get_products(category=None):
+    query = "SELECT * FROM c"
+    if category:
+        query = f"SELECT * FROM c WHERE c.category='{category}'"
+    return list(products_container.query_items(query=query, enable_cross_partition_query=True))
 
-class CartItem(BaseModel):
-    id: str
-    user_id: str
-    product_id: str
-    quantity: int
+def add_to_cart(item):
+    cart_container.create_item(body=item)
 
-class Order(BaseModel):
-    id: str
-    user_id: str
-    items: List[CartItem]
-    status: str
+def get_cart(user_id):
+    query = f"SELECT * FROM c WHERE c.user_id='{user_id}'"
+    return list(cart_container.query_items(query=query, enable_cross_partition_query=True))
+
+def create_order(order):
+    orders_container.create_item(body=order)
